@@ -10,5 +10,5 @@ import java.util.Map;
  * @date 2024/03/21
  */
 public interface BattleGround {
-    void init(String sessionId, CharacterInfo character, int maxMonsters, Long mapId);
+    void init(String sessionId, CharacterInfo character, int column, int row, Long mapId);
 }

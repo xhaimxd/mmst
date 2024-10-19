@@ -37,6 +37,8 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
     @Resource
     private ApplicationEventPublisher eventPublisher;
     private double spawnFrequency = 1;
+    private Integer column;
+    private Integer row;
     private List<MonsterInfo> monsters;
     private List<String> messages;
     private Long mapId;
@@ -51,7 +53,7 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
     private Map<String, ScheduledFuture<?>> monsterFutures;
     private volatile boolean running = true;
 
-    public void init(String sessionId, CharacterInfo character, int maxMonsters, Long mapId) {
+    public void init(String sessionId, CharacterInfo character, int column, int row, Long mapId) {
         if (!initialized) {
             log.info("初始化战斗场：{}", Thread.currentThread().getName());
             this.mapId = mapId;
@@ -59,6 +61,9 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
             this.character = character;
             this.monsters = new CopyOnWriteArrayList<>();
             this.messages = new CopyOnWriteArrayList<>();
+            this.column = column;
+            this.row = row;
+            int maxMonsters = column * row;
             this.existStates = new boolean[maxMonsters];
             for (int i = 0; i < maxMonsters; i++) {
                 monsters.add(MonsterSpawner.EMPTY_MONSTER);
@@ -119,7 +124,7 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
 
     private void characterAttack() {
         try {
-            character.attack(monsters, messages);
+            character.attack(monsters, messages, column, row);
             checkMonsters();
             message();
         } catch (Exception e) {
@@ -129,7 +134,7 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
 
     private void monsterAttach(MonsterInfo monster) {
         try {
-            monster.attack(List.of(this.character), messages);
+            monster.attack(List.of(this.character), messages, column, row);
             checkCharacter();
             message();
         } catch (Exception e) {

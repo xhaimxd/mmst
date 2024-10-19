@@ -29,7 +29,12 @@ public class MonsterInfo implements Serializable, Life {
     }
 
     @Override
-    public Integer getDefense(Life attacker) {
+    public Double getDamage() {
+        return 0L;
+    }
+
+    @Override
+    public Integer getDefense() {
         return 0;
     }
 
@@ -43,7 +48,7 @@ public class MonsterInfo implements Serializable, Life {
     }
 
     @Override
-    public <E extends Life> void attack(List<E> lives, List<String> messages) {
+    public <E extends Life> void attack(List<E> lives, List<String> messages, Integer column, Integer row) {
         for (Life life : lives) {
             life.setHp(life.getHp() - 10);
             messages.add("【%s】使用【普通攻击】对【%s】造成了【%d】点伤害".formatted(name, life.getName(), 10));

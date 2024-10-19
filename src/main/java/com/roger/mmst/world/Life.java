@@ -12,7 +12,31 @@ public interface Life {
 
     String getName();
 
-    Integer getDefense(Life attacker);
+    Long getShowDamage();
+
+    Double getDamage();
+
+    default Integer getBossDamage() {
+        return 0;
+    }
+
+    default Integer getNormalDamage() {
+        return 0;
+    }
+
+    default Integer getCriticalDamage() {
+        return -1;
+    }
+
+    default Double getDefenseIgnore() {
+        return 100.0;
+    }
+
+    Integer getDefense();
+
+    default Double getCriticalRate() {
+        return 0d;
+    }
 
     double getAttackFrequency();
 
@@ -22,5 +46,9 @@ public interface Life {
 
     boolean isDead();
 
-    <E extends Life> void attack(List<E> lives, List<String> messages);
+    default boolean isBoss() {
+        return false;
+    }
+
+    <E extends Life> void attack(List<E> lives, List<String> messages, Integer column, Integer row);
 }
