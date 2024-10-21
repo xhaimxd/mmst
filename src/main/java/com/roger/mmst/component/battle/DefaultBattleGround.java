@@ -1,5 +1,6 @@
 package com.roger.mmst.component.battle;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -84,8 +85,17 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
         if (!messages.isEmpty()) {
             List<String> sendMessage = new ArrayList<>(messages);
             messages.clear();
-            log.info("{}", String.join("\r\n", sendMessage));
+            log.info("\r\n{}", String.join("\r\n", sendMessage));
             wsMessagePublisher.publish(sessionId, BattleMessage.of(sendMessage));
+            if (log.isDebugEnabled()) {
+                String monsterInfo = CollUtil.split(monsters, this.row)
+                        .stream()
+                        .map(monsterCol -> monsterCol.stream()
+                                .map(monster -> monster.isDead() ? "[  ]" : String.valueOf(monster.getHp()))
+                                .collect(Collectors.joining("   ")))
+                        .collect(Collectors.joining("\r\n"));
+                log.debug("目前怪物阵型及血量：\r\n {}", monsterInfo);
+            }
         }
     }
 

@@ -40,15 +40,16 @@ public class SkillInfo {
             }
             case LINE -> {
                 int randomColumn = RandomUtil.randomInt(0, column);
-                List<E> lineLives = CollUtil.sub(defenders, randomColumn * row, (randomColumn + 1));
+                int start = randomColumn * row;
+                List<E> lineLives = CollUtil.sub(defenders, start, start + row);
                 yield RandomUtil.randomEleList(lineLives, attackNumber);
             }
             case FRONT -> {
                 int num = attackNumber;
                 List<E> res = new ArrayList<>();
-                for (int col = 0; col < column && num > 0; col++) {
+                for (int r = 0; r < row && num > 0; r++) {
                     List<E> selected = new ArrayList<>();
-                    for (int r = 0; r < row; r++) {
+                    for (int col = 0; col < column; col++) {
                         int index = col * row + r;
                         E live = defenders.get(index);
                         if (!live.isDead()) {

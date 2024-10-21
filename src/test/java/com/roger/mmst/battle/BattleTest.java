@@ -41,10 +41,10 @@ class BattleTest {
         SkillInfo skillInfo = new SkillInfo();
         skillInfo.setName("战士一转不知道叫什么中文名姑且叫强力攻击吧的技能");
         skillInfo.setAttackCount(2);
-        skillInfo.setAttackNumber(2);
+        skillInfo.setAttackNumber(4);
         skillInfo.setDamageType(SkillInfo.DamageType.PERCENT);
-        skillInfo.setAttackType(SkillInfo.AttackType.ALL);
-        skillInfo.setDamage(183d);
+        skillInfo.setAttackType(SkillInfo.AttackType.FRONT);
+        skillInfo.setDamage(13d);
         return skillInfo;
     }
 }
