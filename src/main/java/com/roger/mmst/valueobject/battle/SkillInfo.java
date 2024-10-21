@@ -21,36 +21,36 @@ public class SkillInfo {
     private Double damage;
     private DamageType damageType;
 
-    enum AttackType {
+    public enum AttackType {
         FRONT, //前排
         LINE, //横排
         ALL //全部
     }
 
-    enum DamageType {
+    public enum DamageType {
         FIX, //固定伤害
         PERCENT //倍率伤害
     }
 
-    public List<Life> getTarget(List<Life> defenders, int column, int row) {
+    public <E extends Life> List<E> getTarget(List<E> defenders, int column, int row) {
         return switch (attackType) {
             case ALL -> {
-                List<Life> lives = defenders.stream().filter(life -> !life.isDead()).toList();
+                List<E> lives = defenders.stream().filter(life -> !life.isDead()).toList();
                 yield RandomUtil.randomEleList(lives, attackNumber);
             }
             case LINE -> {
                 int randomColumn = RandomUtil.randomInt(0, column);
-                List<Life> lineLives = CollUtil.sub(defenders, randomColumn * row, (randomColumn + 1));
+                List<E> lineLives = CollUtil.sub(defenders, randomColumn * row, (randomColumn + 1));
                 yield RandomUtil.randomEleList(lineLives, attackNumber);
             }
             case FRONT -> {
                 int num = attackNumber;
-                List<Life> res = new ArrayList<>();
+                List<E> res = new ArrayList<>();
                 for (int col = 0; col < column && num > 0; col++) {
-                    List<Life> selected = new ArrayList<>();
+                    List<E> selected = new ArrayList<>();
                     for (int r = 0; r < row; r++) {
                         int index = col * row + r;
-                        Life live = defenders.get(index);
+                        E live = defenders.get(index);
                         if (!live.isDead()) {
                             selected.add(live);
                         }

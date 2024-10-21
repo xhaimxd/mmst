@@ -29,8 +29,13 @@ public class MonsterInfo implements Serializable, Life {
     }
 
     @Override
-    public Double getDamage() {
+    public Long getShowDamage() {
         return 0L;
+    }
+
+    @Override
+    public Double getDamage() {
+        return 0d;
     }
 
     @Override

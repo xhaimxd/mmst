@@ -11,3 +11,7 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
+
+logging:
+  level:
+    com.roger.mmst: debug

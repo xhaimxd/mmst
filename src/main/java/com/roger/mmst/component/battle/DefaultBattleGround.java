@@ -84,7 +84,7 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
         if (!messages.isEmpty()) {
             List<String> sendMessage = new ArrayList<>(messages);
             messages.clear();
-            log.info("{}", sendMessage.stream().collect(Collectors.joining("\r\n")));
+            log.info("{}", String.join("\r\n", sendMessage));
             wsMessagePublisher.publish(sessionId, BattleMessage.of(sendMessage));
         }
     }
@@ -144,8 +144,8 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
 
     private void checkCharacter() {
         if (running && this.character.isDead()) {
-            this.running = false;
             messages.add("【%s】被怪物杀死了！".formatted(this.character.getName()));
+            this.running = false;
             spawnScheduler.shutdown();
             characterScheduler.shutdown();
             monsterScheduler.shutdown();

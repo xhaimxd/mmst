@@ -2,10 +2,12 @@ package com.roger.mmst.util;
 
 import cn.hutool.core.util.RandomUtil;
 import com.roger.mmst.world.Life;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+@Slf4j
 public class DamageCalculator {
 
     public static final BigDecimal ONE = BigDecimal.ONE;
@@ -18,39 +20,51 @@ public class DamageCalculator {
 
     public static Long getDamage(Life attacker, Life defender) {
         BigDecimal hitDamage = getHitDamage(attacker, defender.isBoss());
+        log.debug("打击原始伤害：{}", hitDamage);
         if (RandomUtil.randomDouble(0, 1) < attacker.getCriticalRate()) {
-            hitDamage = hitDamage.multiply(getCriticalDamageMultiplier(attacker));
+            BigDecimal criticalDamageMultiplier = getCriticalDamageMultiplier(attacker);
+            log.debug("打出了暴击，伤害倍率：{}", criticalDamageMultiplier);
+            hitDamage = hitDamage.multiply(criticalDamageMultiplier);
         }
         if (defender.isBoss()) {
-            hitDamage = hitDamage.multiply(getDefMultiplier(attacker, defender));
+            BigDecimal defMultiplier = getDefMultiplier(attacker, defender);
+            log.debug("打boss，无视伤害倍率：{}", defMultiplier);
+            hitDamage = hitDamage.multiply(defMultiplier);
         }
-        return hitDamage.longValue();
+        long res = Math.max(1, hitDamage.setScale(0, RoundingMode.HALF_EVEN).longValue());
+        log.debug("最终造成伤害：{}", res);
+        return res;
     }
 
     public static BigDecimal getCriticalDamageMultiplier(Life attacker) {
         if (attacker.getCriticalDamage() == -1) return ZERO;
         return ONE.add(
                 BigDecimal.valueOf(RandomUtil.randomInt(20, 51) + attacker.getCriticalDamage())
-                        .divide(HUNDRED, RoundingMode.HALF_EVEN)
+                        .divide(HUNDRED)
         );
     }
 
     public static BigDecimal getDefMultiplier(Life attacker, Life defender) {
         return ONE.subtract(
-                BigDecimal.valueOf(defender.getDefense()).divide(HUNDRED, RoundingMode.HALF_EVEN)
+                BigDecimal.valueOf(defender.getDefense()).divide(HUNDRED)
                         .multiply(ONE.subtract(
-                                BigDecimal.valueOf(attacker.getDefenseIgnore()).divide(HUNDRED, RoundingMode.HALF_EVEN)
+                                BigDecimal.valueOf(attacker.getDefenseIgnore()).divide(HUNDRED)
                         ))
         );
     }
 
     public static BigDecimal getHitDamage(Life attacker, boolean isBoss) {
+        BigDecimal showDamage = getShowDamage(attacker);
+        log.debug("面板伤害：{}", showDamage);
         BigDecimal totalDamage = getTotalDamage(attacker);
-        BigDecimal skillDamage = BigDecimal.ZERO;
+        log.debug("总伤害：{}", totalDamage);
+        BigDecimal skillDamage = BigDecimal.valueOf(attacker.getSkillDamage());
+        log.debug("技能伤害：{}", skillDamage);
         BigDecimal specialDamage = getSpecialDamage(attacker, isBoss);
-        return getShowDamage(attacker).divide(ONE.add(totalDamage.divide(HUNDRED, RoundingMode.HALF_EVEN)), RoundingMode.HALF_EVEN)
-                .multiply(skillDamage.divide(HUNDRED, RoundingMode.HALF_EVEN))
-                .multiply(ONE.add(totalDamage.add(specialDamage).divide(HUNDRED, RoundingMode.HALF_EVEN)));
+        log.debug("小怪/boss伤害：{}", specialDamage);
+        return showDamage.divide(ONE.add(totalDamage.divide(HUNDRED)))
+                .multiply(skillDamage.divide(HUNDRED))
+                .multiply(ONE.add(totalDamage.add(specialDamage).divide(HUNDRED)));
     }
 
     public static BigDecimal getSpecialDamage(Life attacker, boolean isBoss) {

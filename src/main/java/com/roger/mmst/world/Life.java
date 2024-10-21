@@ -38,6 +38,10 @@ public interface Life {
         return 0d;
     }
 
+    default Double getSkillDamage() {
+        return 100d;
+    }
+
     double getAttackFrequency();
 
     void setHp(Long hp);
