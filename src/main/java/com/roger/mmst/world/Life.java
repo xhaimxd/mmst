@@ -10,6 +10,8 @@ public interface Life {
 
     String getUniqueId();
 
+    Integer getLevel();
+
     String getName();
 
     Long getShowDamage();

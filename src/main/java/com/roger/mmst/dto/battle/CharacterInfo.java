@@ -31,6 +31,11 @@ public class CharacterInfo implements Life, Character {
     private Integer criticalDamage = 0;
 
     @Override
+    public Integer getLevel() {
+        return 260;
+    }
+
+    @Override
     public String getName() {
         return "YazawaNiiico";
     }
@@ -72,6 +77,10 @@ public class CharacterInfo implements Life, Character {
 
     private Long getTotalAtt() {
         return Long.valueOf(getWeapon().getAtt());
+    }
+
+    public Integer getMesoRate() {
+        return 100;
     }
 
     @Override

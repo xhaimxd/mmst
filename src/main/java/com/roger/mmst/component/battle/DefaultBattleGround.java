@@ -78,6 +78,7 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
             initialized = true;
             while (running) {
             }
+            ThreadUtil.safeSleep(1000L);
         }
     }
 
@@ -154,8 +155,8 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
 
     private void checkCharacter() {
         if (running && this.character.isDead()) {
-            messages.add("【%s】被怪物杀死了！".formatted(this.character.getName()));
             this.running = false;
+            messages.add("【%s】被怪物杀死了！".formatted(this.character.getName()));
             spawnScheduler.shutdown();
             characterScheduler.shutdown();
             monsterScheduler.shutdown();
@@ -170,8 +171,7 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
                 monsterFutures.remove(monster.getUniqueId());
                 future.cancel(true);
                 this.exist(index, false);
-                messages.add("【%s】杀死了【%s】，获得【%d】点经验".formatted(this.character.getName(), monster.getName(), 3));
-                eventPublisher.publishEvent(BattleRewardInfo.of(1L, monster.getMobId()));
+                eventPublisher.publishEvent(new BattleRewardInfo(this.character, monster, messages));
             }
         }
     }
