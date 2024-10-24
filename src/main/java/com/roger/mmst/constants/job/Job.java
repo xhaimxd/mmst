@@ -1,16 +1,12 @@
 package com.roger.mmst.constants.job;
 
-import cn.hutool.core.util.ArrayUtil;
 import com.roger.mmst.constants.CodeEnum;
-import com.roger.mmst.constants.Stat;
-import com.roger.mmst.valueobject.character.Character;
+import com.roger.mmst.obj.valueobject.character.Character;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.function.ToIntFunction;
 
 import static com.roger.mmst.constants.Stat.*;
@@ -22,6 +18,7 @@ import static com.roger.mmst.constants.Stat.*;
 @Getter
 @AllArgsConstructor
 public enum Job implements CodeEnum<Integer> {
+    //冒险家
     BEGINNER("新手", null, 0, getStrVal, character -> 0),
 
     WARRIOR("战士", JobType.WARRIOR, 100, getStrVal, getDexVal),

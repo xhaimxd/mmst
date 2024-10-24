@@ -1,10 +1,9 @@
 package com.roger.mmst.constants;
 
-import com.roger.mmst.valueobject.character.Character;
+import com.roger.mmst.obj.valueobject.character.Character;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.function.Function;
 import java.util.function.ToIntFunction;
 
 @AllArgsConstructor

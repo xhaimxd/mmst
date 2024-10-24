@@ -3,8 +3,8 @@ package com.roger.mmst.component.battle;
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.cache.impl.LFUCache;
 import cn.hutool.core.util.RandomUtil;
-import com.roger.mmst.valueobject.MonsterSpawnInfo;
-import com.roger.mmst.valueobject.battle.MonsterInfo;
+import com.roger.mmst.obj.valueobject.MonsterSpawnInfo;
+import com.roger.mmst.obj.valueobject.battle.MonsterInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

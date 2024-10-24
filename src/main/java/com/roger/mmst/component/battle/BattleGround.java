@@ -1,9 +1,6 @@
 package com.roger.mmst.component.battle;
 
-import com.roger.mmst.dto.battle.CharacterInfo;
-import com.roger.mmst.entity.life.Monster;
-
-import java.util.Map;
+import com.roger.mmst.obj.dto.battle.CharacterInfo;
 
 /**
  * @author Roger Liu

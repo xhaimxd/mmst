@@ -1,7 +1,7 @@
 package com.roger.mmst.util;
 
 import cn.hutool.core.util.RandomUtil;
-import com.roger.mmst.world.Life;
+import com.roger.mmst.obj.world.Life;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;

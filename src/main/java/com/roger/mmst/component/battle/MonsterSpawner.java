@@ -1,7 +1,7 @@
 package com.roger.mmst.component.battle;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.roger.mmst.valueobject.battle.MonsterInfo;
+import com.roger.mmst.obj.valueobject.battle.MonsterInfo;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 

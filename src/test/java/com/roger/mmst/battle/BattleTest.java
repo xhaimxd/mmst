@@ -2,9 +2,9 @@ package com.roger.mmst.battle;
 
 import com.roger.mmst.component.battle.DefaultBattleGround;
 import com.roger.mmst.constants.item.WeaponType;
-import com.roger.mmst.dto.battle.CharacterInfo;
-import com.roger.mmst.entity.item.ItemEquipWeapon;
-import com.roger.mmst.valueobject.battle.SkillInfo;
+import com.roger.mmst.obj.dto.battle.CharacterInfo;
+import com.roger.mmst.domain.entity.item.ItemEquipWeapon;
+import com.roger.mmst.obj.valueobject.battle.SkillInfo;
 import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,8 +1,8 @@
 package com.roger.mmst.component.battle;
 
 import cn.hutool.core.util.RandomUtil;
-import com.roger.mmst.dto.battle.CharacterInfo;
-import com.roger.mmst.valueobject.battle.MonsterInfo;
+import com.roger.mmst.obj.dto.battle.CharacterInfo;
+import com.roger.mmst.obj.valueobject.battle.MonsterInfo;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

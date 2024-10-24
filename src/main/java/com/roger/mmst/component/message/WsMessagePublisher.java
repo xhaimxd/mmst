@@ -1,6 +1,6 @@
 package com.roger.mmst.component.message;
 
-import com.roger.mmst.dto.message.WsMessage;
+import com.roger.mmst.obj.dto.message.WsMessage;
 import jakarta.annotation.Resource;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
