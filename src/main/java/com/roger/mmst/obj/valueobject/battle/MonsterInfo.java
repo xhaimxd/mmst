@@ -5,6 +5,7 @@ import com.roger.mmst.obj.world.Life;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
@@ -15,11 +16,11 @@ public class MonsterInfo implements Serializable, Life {
     private Long mobId = 100000L;
     private String name = "绿蜗牛";
     private Double hpPercent;
-    private Long maxHp = 100L;
-    private Long hp = 100L;
+    private Long maxHp = 15L;
+    private Long hp = 15L;
 
     public Double getHpPercent() {
-        return NumberUtil.div(hp, maxHp).setScale(2, RoundingMode.HALF_UP).doubleValue();
+        return NumberUtil.div(hp, maxHp).multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP).doubleValue();
     }
 
     public static MonsterInfo empty() {

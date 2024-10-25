@@ -1,6 +1,7 @@
 package com.roger.mmst.controller.webcontroller;
 
 import com.roger.mmst.component.conf.security.JWT;
+import com.roger.mmst.obj.dto.R;
 import jakarta.annotation.Resource;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +14,8 @@ public class CsrfController {
     private JWT jwt;
 
     @GetMapping("/login")
-    public String login() {
-        return jwt.sign(1L);
+    public R<String> login() {
+        return R.ok(jwt.sign(1L));
     }
 
 

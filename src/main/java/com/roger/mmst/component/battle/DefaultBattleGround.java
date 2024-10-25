@@ -87,7 +87,7 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
             List<String> sendMessage = new ArrayList<>(messages);
             messages.clear();
             log.info("\r\n{}", String.join("\r\n", sendMessage));
-            wsMessagePublisher.publish(sessionId, BattleMessage.of(sendMessage));
+            wsMessagePublisher.publish(sessionId, BattleMessage.of(sendMessage, monsters, character, row, column));
             if (log.isDebugEnabled()) {
                 String monsterInfo = CollUtil.split(monsters, this.row)
                         .stream()

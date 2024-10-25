@@ -51,13 +51,4 @@ public class BattleRewardCalculator {
         double v = baseDiff > 0 ? POSITIVE_LEVEL_DIFF_MODIFIERS[Math.min(baseDiff - 11, 19)] : NEGATIVE_LEVEL_DIFF_MODIFIERS[Math.min(-baseDiff - 11, 23)];
         return BigDecimal.valueOf((100 - v) / 100d);
     }
-
-    public static void main(String[] args) {
-        BattleRewardCalculator calculator = new BattleRewardCalculator();
-        CharacterInfo c = new CharacterInfo();
-        MonsterInfo m = new MonsterInfo();
-        for (int i = 0; i < 20; i++) {
-            System.out.println(calculator.getMeso(c, m));
-        }
-    }
 }

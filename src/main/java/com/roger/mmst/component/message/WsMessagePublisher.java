@@ -9,6 +9,8 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -20,11 +22,17 @@ public class WsMessagePublisher {
     @Resource
     private SimpMessagingTemplate simpMessagingTemplate;
 
+    private static final Map<WsMessage.Type, String> DESTINATION_MAP = new HashMap<>();
+
+    static {
+        DESTINATION_MAP.put(WsMessage.Type.BATTLE, "/topic/field");
+    }
+
     public void publish(String sessionId, WsMessage payload) {
         userToSessionId.entrySet().stream()
                 .filter(e -> e.getValue().equals(sessionId))
                 .findFirst()
-                .ifPresent(entry -> simpMessagingTemplate.convertAndSendToUser(sessionId, "/queue/messages", payload, createHeaders(entry.getValue(), entry.getKey())));
+                .ifPresent(entry -> simpMessagingTemplate.convertAndSendToUser(sessionId, DESTINATION_MAP.get(payload.getType()), payload, createHeaders(entry.getValue(), entry.getKey())));
     }
 
     public void register(String sessionId, Principal principal) {

@@ -10,6 +10,8 @@ import com.roger.mmst.constants.exception.VerifyException;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class CharacterService {
 
@@ -28,5 +30,9 @@ public class CharacterService {
         }
         Character character = characterFactory.create(dto.getName(), dto.getJob());
         characterRepo.save(character);
+    }
+
+    public Optional<Character> findById(Long characterId) {
+        return characterRepo.findById(characterId);
     }
 }

@@ -43,7 +43,7 @@ public class TokenValidateChannelInterceptor implements ChannelInterceptor {
                     accessor.setUser(token);
                 });
             } catch (Exception e) {
-                log.error("ws连接鉴权失败：{}", e.getMessage());
+                log.error("ws连接鉴权失败", e);
             }
         }
         return message;

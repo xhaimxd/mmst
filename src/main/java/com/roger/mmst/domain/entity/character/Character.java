@@ -33,6 +33,8 @@ public class Character extends AuditEntity {
     private Integer baseLuk = 4;
     private Integer baseSpeed = 100;
     private Integer baseAvoid = 0;
+    private Integer statPoint = 0;
+    private Integer skillPoint = 0;
 
     @OneToMany
     @ToString.Exclude

@@ -57,32 +57,32 @@ function showGreeting(message) {
 $(function () {
     $("form").on('submit', (e) => e.preventDefault());
     $("#connect").click(() => {
-        $.ajax({
-            type: "get",
-            url: "/csrf",
-            async: false,
-            // dataType: 'json',
-            error: function (data) {
-                console.log("error")
-                console.log(data)
-            },
-            success: function (data) {
-                headers[data["headerName"]] = data["token"]
-            }
-        })
-        $.ajax({
-            type: "get",
-            url: "/login",
-            async: false,
-            // dataType: 'json',
-            error: function (data) {
-                console.log("error")
-                console.log(data)
-            },
-            success: function (data) {
-                headers["Authorization"] = "Bearer " + data
-            }
-        })
+        // $.ajax({
+        //     type: "get",
+        //     url: "/csrf",
+        //     async: false,
+        //     // dataType: 'json',
+        //     error: function (data) {
+        //         console.log("error")
+        //         console.log(data)
+        //     },
+        //     success: function (data) {
+        //         headers[data["headerName"]] = data["token"]
+        //     }
+        // })
+        // $.ajax({
+        //     type: "get",
+        //     url: "/login",
+        //     async: false,
+        //     // dataType: 'json',
+        //     error: function (data) {
+        //         console.log("error")
+        //         console.log(data)
+        //     },
+        //     success: function (data) {
+        //         headers["Authorization"] = "Bearer " + data
+        //     }
+        // })
         connect()
     });
     $("#disconnect").click(() => disconnect());

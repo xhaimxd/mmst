@@ -17,6 +17,8 @@ import static com.roger.mmst.util.DamageCalculator.HUNDRED;
 
 @Data
 public class CharacterInfo implements Life, Character {
+    private String name;
+    private Integer level;
     private Long hp = 100L;
     private Integer strVal = 49;
     private Integer dexVal = 4;
@@ -29,16 +31,6 @@ public class CharacterInfo implements Life, Character {
     private SkillInfo mainAttackSkill;
     private Double criticalRate = 20d;
     private Integer criticalDamage = 0;
-
-    @Override
-    public Integer getLevel() {
-        return 260;
-    }
-
-    @Override
-    public String getName() {
-        return "YazawaNiiico";
-    }
 
     private Long getDamageRange() {
         return getActualDamage()
@@ -95,7 +87,7 @@ public class CharacterInfo implements Life, Character {
 
     @Override
     public double getAttackFrequency() {
-        return 2;
+        return 0.5;
     }
 
     @Override
