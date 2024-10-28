@@ -11,8 +11,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
- @author Roger Liu
- @date 2024/03/06
+ * @author Roger Liu
+ * @date 2024/03/06
  */
 @Component
 public class JWT {
@@ -39,5 +39,11 @@ public class JWT {
             throw new VerifyException("token expired");
         }
         return ((NumberWithFormat) jwt.getPayload(EXPIRE)).longValue();
+    }
+
+    public Long getId(String token) {
+        token = token.substring("Bearer ".length());
+        verify(token);
+        return ((NumberWithFormat) cn.hutool.jwt.JWT.of(token).getPayload(ID)).longValue();
     }
 }

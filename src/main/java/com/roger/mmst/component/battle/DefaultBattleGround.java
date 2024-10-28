@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Component
@@ -52,11 +53,12 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
     private String sessionId;
     private CharacterInfo character;
     private Map<String, ScheduledFuture<?>> monsterFutures;
-    private volatile boolean running = true;
+    private volatile AtomicBoolean running;
 
-    public void init(String sessionId, CharacterInfo character, int column, int row, Long mapId) {
+    public void init(String sessionId, CharacterInfo character, int column, int row, Long mapId, AtomicBoolean running) {
         if (!initialized) {
             log.info("初始化战斗场：{}", Thread.currentThread().getName());
+            this.running = running;
             this.mapId = mapId;
             this.sessionId = sessionId;
             this.character = character;
@@ -76,9 +78,10 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
             spawnScheduler.scheduleAtFixedRate(this::spawn, 0, (long) (spawnFrequency * 1000L), TimeUnit.MILLISECONDS);
             characterScheduler.scheduleAtFixedRate(this::characterAttack, 0, (long) (character.getAttackFrequency() * 1000L), TimeUnit.MILLISECONDS);
             initialized = true;
-            while (running) {
+            while (this.running.get()) {
+                ThreadUtil.safeSleep(1000L);
             }
-            ThreadUtil.safeSleep(1000L);
+            destroy();
         }
     }
 
@@ -154,16 +157,14 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
     }
 
     private void checkCharacter() {
-        if (running && this.character.isDead()) {
-            this.running = false;
+        if (running.get() && this.character.isDead()) {
+            this.running.set(false);
             messages.add("【%s】被怪物杀死了！".formatted(this.character.getName()));
-            spawnScheduler.shutdown();
-            characterScheduler.shutdown();
-            monsterScheduler.shutdown();
         }
     }
 
     private void checkMonsters() {
+        if (!running.get()) return;
         for (int index = 0; index < monsters.size(); index++) {
             MonsterInfo monster = monsters.get(index);
             if (Boolean.TRUE.equals(monster.getExist()) && monster.isDead()) {
@@ -177,7 +178,10 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
     }
 
     @Override
-    public void destroy() throws Exception {
+    public void destroy() {
+        spawnScheduler.shutdown();
+        characterScheduler.shutdown();
+        monsterScheduler.shutdown();
         monsters = null;
     }
 }

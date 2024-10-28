@@ -79,7 +79,11 @@ public class WSConfig implements WebSocketMessageBrokerConfigurer {
                         ? (CsrfToken) sessionAttributes.get(CsrfToken.class.getName()) : null;
                 StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
                 if (accessor != null && expectedToken != null) {
-                    accessor.setNativeHeader(expectedToken.getHeaderName(), generateTokenString(expectedToken.getToken()));
+                    try {
+                        accessor.setNativeHeader(expectedToken.getHeaderName(), generateTokenString(expectedToken.getToken()));
+                    } catch (IllegalStateException e) {
+                        //ignore
+                    }
                 }
                 return message;
             }

@@ -9,6 +9,8 @@ import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 @SpringBootTest
 class BattleTest {
 
@@ -20,7 +22,7 @@ class BattleTest {
         CharacterInfo characterInfo = new CharacterInfo();
         characterInfo.setMainAttackSkill(getSkill());
         characterInfo.setWeapon(getWeapon());
-        Thread thread = new Thread(() -> defaultBattleGroundObject.init("test", characterInfo, 3, 4, 1L));
+        Thread thread = new Thread(() -> defaultBattleGroundObject.init("test", characterInfo, 3, 4, 1L, new AtomicBoolean(true)));
         thread.start();
         try {
             thread.join();
