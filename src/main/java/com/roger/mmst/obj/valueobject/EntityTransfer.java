@@ -25,7 +25,7 @@ public class EntityTransfer {
 
     private static ItemEquipWeapon weaponForTest() {
         ItemEquipWeapon weapon = new ItemEquipWeapon();
-        weapon.setAtt(5);
+        weapon.getBaseStats().setAtt(5);
         weapon.setWeaponType(WeaponType.ONE_HAND_BLUNT);
         return weapon;
     }

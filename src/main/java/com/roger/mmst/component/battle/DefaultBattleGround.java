@@ -7,9 +7,9 @@ import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.roger.mmst.component.message.WsMessagePublisher;
 import com.roger.mmst.obj.dto.battle.CharacterInfo;
+import com.roger.mmst.obj.dto.message.BattleMessage;
 import com.roger.mmst.obj.valueobject.battle.BattleRewardInfo;
 import com.roger.mmst.obj.valueobject.battle.MonsterInfo;
-import com.roger.mmst.obj.dto.message.BattleMessage;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.DisposableBean;
@@ -38,18 +38,18 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
     private WsMessagePublisher wsMessagePublisher;
     @Resource
     private ApplicationEventPublisher eventPublisher;
-    private double spawnFrequency = 1;
+    private double spawnFrequency = 2;
     private Integer column;
     private Integer row;
     private List<MonsterInfo> monsters;
     private List<String> messages;
     private Long mapId;
-    private boolean[] existStates;
+    private volatile boolean[] existStates;
     private ScheduledExecutorService spawnScheduler;
     private ScheduledExecutorService characterScheduler;
     private ScheduledExecutorService monsterScheduler;
     private boolean initialized = false;
-    private int spawnCount = 2 + 1; //一次最多生成2只
+    private int spawnCount = 10 + 1; //一次最多生成2只
     private String sessionId;
     private CharacterInfo character;
     private Map<String, ScheduledFuture<?>> monsterFutures;
@@ -104,9 +104,7 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
     }
 
     private void exist(int index, boolean exist) {
-        synchronized (this.existStates) {
-            existStates[index] = exist;
-        }
+        existStates[index] = exist;
     }
 
     private void spawn() {
@@ -168,11 +166,12 @@ public class DefaultBattleGround implements BattleGround, DisposableBean {
         for (int index = 0; index < monsters.size(); index++) {
             MonsterInfo monster = monsters.get(index);
             if (Boolean.TRUE.equals(monster.getExist()) && monster.isDead()) {
+                monster.setExist(false);
                 ScheduledFuture<?> future = monsterFutures.get(monster.getUniqueId());
                 monsterFutures.remove(monster.getUniqueId());
-                future.cancel(true);
+                if (future != null) future.cancel(true);
                 this.exist(index, false);
-                eventPublisher.publishEvent(new BattleRewardInfo(this.character, monster, messages));
+                eventPublisher.publishEvent(new BattleRewardInfo(this.character, monster, messages, column, row));
             }
         }
     }

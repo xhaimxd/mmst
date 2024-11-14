@@ -2,10 +2,7 @@ package com.roger.mmst.domain.entity.item;
 
 import com.roger.mmst.constants.item.EquipType;
 import com.roger.mmst.constants.job.JobType;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -25,6 +22,7 @@ import java.util.Objects;
 public class ItemEquip extends Item {
 
     private EquipType equipType;
+    private Boolean equipped;
     private Integer level;
     private JobType job;
     private Integer maxHp;
@@ -33,18 +31,23 @@ public class ItemEquip extends Item {
     private Integer intReq;
     private Integer dexReq;
     private Integer lukReq;
-    private Integer strVal;
-    private Integer intVal;
-    private Integer dexVal;
-    private Integer lukVal;
-    private Integer att;
-    private Integer matt;
-    private Integer def;
-    private Integer avoid;
-    private Integer speed;
-    private Integer bd;
-    private Integer ide;
-    private Integer damage;
+    @Embedded
+    private ItemEquipStats baseStats = new ItemEquipStats();
+
+    @Embedded
+    @AttributeOverride(name = "strVal", column = @Column(name = "flameStrVal"))
+    @AttributeOverride(name = "intVal", column = @Column(name = "flameIntVal"))
+    @AttributeOverride(name = "dexVal", column = @Column(name = "flameDexVal"))
+    @AttributeOverride(name = "lukVal", column = @Column(name = "flameLukVal"))
+    @AttributeOverride(name = "att", column = @Column(name = "flameAttVal"))
+    @AttributeOverride(name = "matt", column = @Column(name = "flameMattVal"))
+    @AttributeOverride(name = "def", column = @Column(name = "flameDefVal"))
+    @AttributeOverride(name = "avoid", column = @Column(name = "flameAvoidVal"))
+    @AttributeOverride(name = "speed", column = @Column(name = "flameSpeedVal"))
+    @AttributeOverride(name = "bd", column = @Column(name = "flameBdVal"))
+    @AttributeOverride(name = "ide", column = @Column(name = "flameIdeVal"))
+    @AttributeOverride(name = "damage", column = @Column(name = "flameDamageVal"))
+    private ItemEquipStats flameStats = new ItemEquipStats();
 
     @Override
     public boolean equals(Object o) {
@@ -60,5 +63,9 @@ public class ItemEquip extends Item {
     @Override
     public int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    public long getAtt() {
+        return baseStats.getAtt() + flameStats.getAtt();
     }
 }

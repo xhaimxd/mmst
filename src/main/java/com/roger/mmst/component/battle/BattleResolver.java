@@ -38,7 +38,7 @@ public class BattleResolver {
                 BattleGround battleGround = battleGroundProvider.getObject();
                 AtomicBoolean running = new AtomicBoolean(true);
                 try (ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()) {
-                    executorService.submit(() -> battleGround.init(sessionId, EntityTransfer.toCharacterInfo(character), 2, 2, message.getMapId(), running));
+                    executorService.submit(() -> battleGround.init(sessionId, EntityTransfer.toCharacterInfo(character), 6, 6, message.getMapId(), running));
                     battleFutures.put(userId, running);
                     timedCache.put(userId, true);
                 }

@@ -12,4 +12,6 @@ public class BattleRewardInfo {
     private CharacterInfo character;
     private MonsterInfo monster;
     private List<String> messages;
+    private Integer column;
+    private Integer row;
 }

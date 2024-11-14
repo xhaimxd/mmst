@@ -25,6 +25,8 @@ public class CharacterEquip extends BaseEntity {
     private ItemEquip item;
     @ManyToOne
     private Character character;
+    //4个戒指2个项链3个图腾
+    private Integer equippedIndex;
 
     @Override
     public final boolean equals(Object o) {
